@@ -8,7 +8,16 @@ const fs = require("fs");
 pathToAttachment = `${__dirname}/ticket.jpg`;
 attachment = fs.readFileSync(pathToAttachment).toString("base64");
 
-const sendMail = async (email) => {
+const sendMail = async (email, amount) => {
+  let attachments = [];
+  for (let i = 1; i <= amount; i++) {
+    attachments.push({
+      content: attachment,
+      filename: "ticket.jpg",
+      type: "image/jpeg",
+      disposition: "attachment",
+    });
+  }
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const msg = {
     to: email,
@@ -16,14 +25,7 @@ const sendMail = async (email) => {
     subject: "Your ticket to Prescott Comedy Club",
     text: "We look forward to seeing you!",
     html: "<p>We look forward to seeing you!</p>",
-    attachments: [
-    {
-      content: attachment,
-      filename: "ticket.jpg",
-      type: "image/jpeg",
-      disposition: "attachment",
-    },
-  ],
+    attachments: attachments,
   };
   try {
     return await sgMail.send(msg);
@@ -31,7 +33,7 @@ const sendMail = async (email) => {
     console.error(error);
 
     if (error.response) {
-      console.error(error.response.body)
+      console.error(error.response.body);
       return error.response.body;
     } else {
       return error;
@@ -59,11 +61,10 @@ router.post("/process-payment", async (req, res) => {
   };
 
   const email = request_params.email;
-  console.log(email);
 
   try {
     const response = await payments_api.createPayment(request_body);
-    await sendMail(email);
+    await sendMail(email, request_params.amount);
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json(error);
