@@ -26,9 +26,9 @@ const defaultClient = squareConnect.ApiClient.instance;
 
 // Configure OAuth2 access token for authorization: oauth2
 const oauth2 = defaultClient.authentications['oauth2'];
-oauth2.accessToken = process.env.SANDBOX_TOKEN;
+oauth2.accessToken = process.env.PRODUCTION_TOKEN;
 
-defaultClient.basePath = 'https://connect.squareupsandbox.com';
+defaultClient.basePath = 'https://connect.squareup.com';
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
