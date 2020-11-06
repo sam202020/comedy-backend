@@ -13,7 +13,7 @@ const sendMail = async (email, amount) => {
   for (let i = 1; i <= amount; i++) {
     attachments.push({
       content: attachment,
-      filename: "ticket.jpg",
+      filename: `ticket${i}.jpg`,
       type: "image/jpeg",
       disposition: "attachment",
     });
