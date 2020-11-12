@@ -20,11 +20,12 @@ const sendMail = async (email, amount) => {
   }
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const msg = {
-    to: [email, "zevengelson7@gmail.com", "samlandsman20@gmail.com"],
+    to: email,
+    bcc: ["zevengelson7@gmail.com", "samlandsman20@gmail.com"],
     from: "tickets@prescottcomedyclub.com",
-    subject: "Your ticket to Prescott Comedy Club",
+    subject: "Your tickets to Prescott Comedy Club",
     text: "We look forward to seeing you!",
-    html: "<p>We look forward to seeing you!</p>",
+    html: "<p>Thank you for your support. We look forward to seeing you!</p>",
     attachments: attachments,
   };
   try {
