@@ -8,7 +8,7 @@ const fs = require("fs");
 pathToAttachment = `${__dirname}/ticket.jpg`;
 attachment = fs.readFileSync(pathToAttachment).toString("base64");
 
-const sendMail = async (email, amount) => {
+const sendMail = async (email, amount, date) => {
   let attachments = [];
   for (let i = 1; i <= amount; i++) {
     attachments.push({
@@ -25,7 +25,7 @@ const sendMail = async (email, amount) => {
     from: "tickets@prescottcomedyclub.com",
     subject: "Your tickets to Prescott Comedy Club",
     text: "We look forward to seeing you!",
-    html: "<p>Thank you for your support. We look forward to seeing you!</p>",
+    html: `<p>Thank you for your support. We look forward to seeing you on ${date}!</p>`,
     attachments: attachments,
   };
   try {
@@ -62,10 +62,11 @@ router.post("/process-payment", async (req, res) => {
   };
 
   const email = request_params.email;
+  const date = request_params.date;
 
   try {
     const response = await payments_api.createPayment(request_body);
-    await sendMail(email, request_params.amount);
+    await sendMail(email, request_params.amount, date);
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json(error);
