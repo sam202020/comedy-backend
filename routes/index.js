@@ -59,6 +59,7 @@ router.post("/process-payment", async (req, res) => {
       currency: "USD",
     },
     idempotency_key: idempotency_key,
+    location_id: "RHD0C0D8H3ND2"
   };
 
   const email = request_params.email;
