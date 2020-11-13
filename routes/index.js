@@ -25,7 +25,7 @@ const sendMail = async (email, amount, date) => {
     from: "tickets@prescottcomedyclub.com",
     subject: "Your tickets to Prescott Comedy Club",
     text: "We look forward to seeing you!",
-    html: `<p>Thank you for your support. We look forward to seeing you on ${date}!</p>`,
+    html: `<p>Thank you for your purchase. We look forward to seeing you on ${date}!</p>`,
     attachments: attachments,
   };
   try {
