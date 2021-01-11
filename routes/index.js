@@ -9,15 +9,15 @@ pathToAttachment = `${__dirname}/ticket.jpg`;
 attachment = fs.readFileSync(pathToAttachment).toString("base64");
 
 const sendMail = async (email, amount, date) => {
-  let attachments = [];
-  for (let i = 1; i <= amount; i++) {
-    attachments.push({
-      content: attachment,
-      filename: `ticket${i}.jpg`,
-      type: "image/jpeg",
-      disposition: "attachment",
-    });
-  }
+  // let attachments = [];
+  // for (let i = 1; i <= amount; i++) {
+  //   attachments.push({
+  //     content: attachment,
+  //     filename: `ticket${i}.jpg`,
+  //     type: "image/jpeg",
+  //     disposition: "attachment",
+  //   });
+  // }
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const msg = {
     to: email,
@@ -25,8 +25,7 @@ const sendMail = async (email, amount, date) => {
     from: "tickets@prescottcomedyclub.com",
     subject: "Your tickets to Prescott Comedy Club",
     text: "We look forward to seeing you!",
-    html: `<p>Thank you for your purchase. We look forward to seeing you on ${date}!</p>`,
-    attachments: attachments,
+    html: `<p>Thank you for your purchase of ${amount} tickets. We look forward to seeing you on ${date}! Present this email at the door for entry.</p>`,
   };
   try {
     return await sgMail.send(msg);
@@ -59,7 +58,7 @@ router.post("/process-payment", async (req, res) => {
       currency: "USD",
     },
     idempotency_key: idempotency_key,
-    location_id: "RHD0C0D8H3ND2"
+    location_id: "RHD0C0D8H3ND2",
   };
 
   const email = request_params.email;
